@@ -206,8 +206,8 @@ func (b BST) sizeNode(x *node) int {
 	return x.len
 }
 
-//
-// Return -1 when tree is empty.
+// Height returns the size of the three.
+// Returns -1 when tree is empty.
 func (b BST) Height() int {
 	return b.heightNode(b.root)
 }
@@ -220,7 +220,7 @@ func (b BST) heightNode(x *node) int {
 }
 
 //
-// When key is not found return nil
+// When key is not found returns an empty string.
 func (b BST) Floor(key string) string {
 	x := b.floorNode(b.root, key)
 	if x == nil {
@@ -248,7 +248,7 @@ func (b BST) floorNode(x *node, key string) *node {
 }
 
 //
-// When key is not found will return nil.
+// When key is not found returns an empty string.
 func (b BST) Ceiling(key string) string {
 	x := b.ceiling(b.root, key)
 	if x == nil {
@@ -319,6 +319,8 @@ func (b BST) collect(x *node, queue *stringQueue, lo, hi string) {
 	}
 }
 
+//
+// If called on an empty tree it will silently return.
 func (b BST) Min() string {
 	if b.IsEmpty() {
 		return ""
@@ -333,6 +335,8 @@ func (b BST) min(x *node) *node {
 	return b.min(x.left)
 }
 
+//
+// If called on an empty tree it will silently return.
 func (b BST) Max() string {
 	if b.IsEmpty() {
 		return ""
