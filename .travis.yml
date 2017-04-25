@@ -1,3 +1,6 @@
 language: go
 go_import_path: kkn.fi/bst
 script: go test
+go:
+    - 1.8.1
+    - tip
