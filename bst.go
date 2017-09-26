@@ -17,8 +17,24 @@ type (
 		right *node
 		len   int
 	}
-	// BST is a symbol table implemented with a binary search tree. Key type is
-	// a string and value type is an interface{}.
+	// BST represents an ordered symbol table implemented with a binary search tree.
+	// Key type is a string and value type is an interface{}.
+	// It supports the usual Put, Get, Contains, Delete, Size, and
+	// IsEmpty functions.
+	// It also provides ordered functions for finding the minimum, maximum,
+	// floor, ceiling.
+	// It also provides a Keys function for iterating over all of the keys.
+	// A symbol table implements the associative array abstraction:
+	// when associating a value with a key that is already in the symbol table,
+	// the convention is to replace the old value with the new value.
+	// Values cannot be nil. Setting the value associated with a key to nil
+	// is equivalent to deleting the key from the symbol table.
+	// This implementation uses an (unbalanced) binary search tree.
+	// The Put, Contains, Remove, Min, Max, Ceiling, Floor, and Rank
+	// operations each take linear time in the worst case, if the tree
+	// becomes unbalanced.
+	// The Size, and IsEmpty operations take constant time.
+	// Construction takes constant time.
 	BST struct {
 		root *node
 	}
@@ -172,6 +188,7 @@ func (b BST) selectNode(x *node, k int) *node {
 	}
 }
 
+// Rank returns the number of keys in the symbol table strictly less than key.
 func (b BST) Rank(key string) int {
 	return b.rankNode(key, b.root)
 }
@@ -190,6 +207,7 @@ func (b BST) rankNode(key string, x *node) int {
 	}
 }
 
+// Size returns the number of keys in the symbol table in the given range.
 func (b BST) Size(lo, hi string) int {
 	if strings.Compare(lo, hi) > 0 {
 		return 0
@@ -220,7 +238,7 @@ func (b BST) heightNode(x *node) int {
 	return int(1 + math.Max(float64(b.heightNode(x.left)), float64(b.heightNode(x.right))))
 }
 
-//
+// Floor returns the largest key in the symbol table less than or equal to key.
 // When key is not found returns an empty string.
 func (b BST) Floor(key string) string {
 	x := b.floorNode(b.root, key)
@@ -248,7 +266,7 @@ func (b BST) floorNode(x *node, key string) *node {
 	return x
 }
 
-//
+// Ceiling returns the smallest key in the symbol table greater than or equal to key.
 // When key is not found returns an empty string.
 func (b BST) Ceiling(key string) string {
 	x := b.ceiling(b.root, key)
@@ -320,7 +338,7 @@ func (b BST) collect(x *node, queue *stringQueue, lo, hi string) {
 	}
 }
 
-//
+// Min returns the smallest key in the symbol table.
 // If called on an empty tree it will silently return.
 func (b BST) Min() string {
 	if b.IsEmpty() {
@@ -336,7 +354,7 @@ func (b BST) min(x *node) *node {
 	return b.min(x.left)
 }
 
-//
+// Max returns the largest key in the symbol table.
 // If called on an empty tree it will silently return.
 func (b BST) Max() string {
 	if b.IsEmpty() {
