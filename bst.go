@@ -1,6 +1,7 @@
 package bst // import "kkn.fi/bst"
 
 import (
+	"bytes"
 	"fmt"
 	"math"
 	"strings"
@@ -363,17 +364,19 @@ func (b BST) IsEmpty() bool {
 
 // String returns a string representation of the tree.
 func (b BST) String() string {
-	var str = "BST{"
+	var buf bytes.Buffer
+	buf.WriteString("BST{")
 	keys := b.Keys()
 	lenKeys := len(keys)
 	for i, k := range keys {
-		str += fmt.Sprintf("%v:%v", k, b.Get(k))
+		buf.WriteString(k)
+		buf.WriteString(fmt.Sprintf("%v", b.Get(k)))
 		if i+1 != lenKeys {
-			str += ", "
+			buf.WriteString(", ")
 		}
 	}
-	str += "}"
-	return str
+	buf.WriteString("}")
+	return buf.String()
 }
 
 func (q *stringQueue) enqueue(x string) {
