@@ -3,13 +3,11 @@ package bst // import "kkn.fi/bst"
 import (
 	"bytes"
 	"fmt"
-	"math"
 	"strings"
 )
 
 type (
 	stringQueue []string
-	nodeQueue   []*node
 	node        struct {
 		key   string
 		value interface{}
@@ -225,19 +223,6 @@ func (b BST) sizeNode(x *node) int {
 	return x.len
 }
 
-// Height returns the size of the three.
-// Returns -1 when tree is empty.
-func (b BST) Height() int {
-	return b.heightNode(b.root)
-}
-
-func (b BST) heightNode(x *node) int {
-	if x == nil {
-		return -1
-	}
-	return int(1 + math.Max(float64(b.heightNode(x.left)), float64(b.heightNode(x.right))))
-}
-
 // Floor returns the largest key in the symbol table less than or equal to key.
 // When key is not found returns an empty string.
 func (b BST) Floor(key string) string {
@@ -292,22 +277,6 @@ func (b BST) ceiling(x *node, key string) *node {
 		return x
 	}
 	return b.ceiling(x.right, key)
-}
-
-func (b BST) LevelOrder() []string {
-	keys := new(stringQueue)
-	queue := new(nodeQueue)
-	queue.enqueue(b.root)
-	for !queue.isEmpty() {
-		x := queue.dequeue()
-		if x == nil {
-			continue
-		}
-		keys.enqueue(x.key)
-		queue.enqueue(x.left)
-		queue.enqueue(x.right)
-	}
-	return keys.stringSlice()
 }
 
 // Keys returns all the keys in the tree.
@@ -404,18 +373,4 @@ func (q *stringQueue) enqueue(x string) {
 func (q stringQueue) stringSlice() []string {
 	r := make([]string, 0, len(q))
 	return append(r, []string(q)...)
-}
-
-func (q *nodeQueue) enqueue(x *node) {
-	*q = append(*q, x)
-}
-
-func (q *nodeQueue) dequeue() *node {
-	tmp := (*q)[0]
-	(*q) = (*q)[1:]
-	return tmp
-}
-
-func (q nodeQueue) isEmpty() bool {
-	return len(q) == 0
 }

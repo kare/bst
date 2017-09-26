@@ -58,38 +58,6 @@ func TestKeys(t *testing.T) {
 	}
 }
 
-func TestLevelOrder(t *testing.T) {
-	expected := []struct {
-		key   string
-		value int
-	}{
-		{"S", 0},
-		{"E", 12},
-		{"X", 7},
-		{"A", 8},
-		{"R", 3},
-		{"C", 4},
-		{"H", 5},
-		{"M", 9},
-		{"L", 11},
-		{"P", 10},
-	}
-	b := New()
-	for v, k := range data {
-		b.Put(k, v)
-		assertBST(b, t)
-	}
-	keys := b.LevelOrder()
-	for i, td := range expected {
-		if keys[i] != td.key {
-			t.Errorf("expected key '%v', but got '%v'", td.key, keys[i])
-		}
-		if b.Get(keys[i]) != td.value {
-			t.Errorf("expected value '%v', but got '%v'", td.value, b.Get(keys[i]))
-		}
-	}
-}
-
 func TestDeleteMin(t *testing.T) {
 	b := New()
 	for v, k := range data {
