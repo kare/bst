@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"fmt"
 	"strings"
+
+	"kkn.fi/queue"
 )
 
 type (
-	stringQueue []string
-	node        struct {
+	node struct {
 		key   string
 		value interface{}
 		left  *node
@@ -285,25 +286,25 @@ func (b BST) Keys() []string {
 }
 
 func (b BST) keys(lo, hi string) []string {
-	queue := new(stringQueue)
-	b.collect(b.root, queue, lo, hi)
-	return queue.stringSlice()
+	q := queue.New[string]()
+	b.collect(b.root, q, lo, hi)
+	return q.Slice()
 }
 
-func (b BST) collect(x *node, queue *stringQueue, lo, hi string) {
+func (b BST) collect(x *node, q *queue.Q[string], lo, hi string) {
 	if x == nil {
 		return
 	}
 	cmplo := strings.Compare(lo, x.key)
 	cmphi := strings.Compare(hi, x.key)
 	if cmplo < 0 {
-		b.collect(x.left, queue, lo, hi)
+		b.collect(x.left, q, lo, hi)
 	}
 	if cmplo <= 0 && cmphi >= 0 {
-		queue.enqueue(x.key)
+		q.Enqueue(x.key)
 	}
 	if cmphi > 0 {
-		b.collect(x.right, queue, lo, hi)
+		b.collect(x.right, q, lo, hi)
 	}
 }
 
@@ -364,13 +365,4 @@ func (b BST) String() string {
 	}
 	buf.WriteString("}")
 	return buf.String()
-}
-
-func (q *stringQueue) enqueue(x string) {
-	*q = append(*q, x)
-}
-
-func (q stringQueue) stringSlice() []string {
-	r := make([]string, 0, len(q))
-	return append(r, []string(q)...)
 }
