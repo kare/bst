@@ -1,4 +1,4 @@
-package bst // import "kkn.fi/bst"
+package bst
 
 import (
 	"bytes"
