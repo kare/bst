@@ -1,6 +1,0 @@
-language: go
-go_import_path: kkn.fi/bst
-script: make test
-go:
-    - 1.9
-    - tip
