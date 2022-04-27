@@ -1,6 +1,7 @@
 package bst
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -11,12 +12,12 @@ var (
 )
 
 func TestPut(t *testing.T) {
-	b := New()
+	b := New[string]()
 	if !b.IsEmpty() {
 		t.Error("expected empty bst")
 	}
-	for v, k := range data {
-		b.Put(k, v)
+	for i, k := range data {
+		b.Put(k, fmt.Sprintf("%d", i))
 		assertBST(b, t)
 	}
 	if b.Len() != lenData {
@@ -43,25 +44,25 @@ func TestKeys(t *testing.T) {
 		{"S", 0},
 		{"X", 7},
 	}
-	b := New()
+	b := New[string]()
 	for v, k := range data {
-		b.Put(k, v)
+		b.Put(k, fmt.Sprintf("%d", v))
 	}
 	keys := b.Keys()
 	for i, td := range expected {
 		if keys[i] != td.key {
 			t.Errorf("expected key '%v', but got '%v'", td.key, keys[i])
 		}
-		if b.Get(keys[i]) != td.value {
+		if b.Get(keys[i]) != fmt.Sprintf("%d", td.value) {
 			t.Errorf("expected value '%v', but got '%v'", td.value, b.Get(keys[i]))
 		}
 	}
 }
 
 func TestDeleteMin(t *testing.T) {
-	b := New()
+	b := New[string]()
 	for v, k := range data {
-		b.Put(k, v)
+		b.Put(k, fmt.Sprintf("%d", v))
 		assertBST(b, t)
 	}
 	for !b.IsEmpty() {
@@ -72,9 +73,9 @@ func TestDeleteMin(t *testing.T) {
 }
 
 func TestDeleteMax(t *testing.T) {
-	b := New()
+	b := New[string]()
 	for v, k := range data {
-		b.Put(k, v)
+		b.Put(k, fmt.Sprintf("%d", v))
 		assertBST(b, t)
 	}
 	for !b.IsEmpty() {
@@ -85,9 +86,9 @@ func TestDeleteMax(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	b := New()
+	b := New[string]()
 	for v, k := range data {
-		b.Put(k, v)
+		b.Put(k, fmt.Sprintf("%d", v))
 		assertBST(b, t)
 	}
 	for _, k := range b.Keys() {
@@ -100,7 +101,7 @@ func TestDelete(t *testing.T) {
 	}
 }
 
-func assertBST(b *BST, t *testing.T) {
+func assertBST[T comparable](b *BST[T], t *testing.T) {
 	if !isBST(b) {
 		t.Error("not in symmetric order")
 	}
@@ -114,13 +115,13 @@ func assertBST(b *BST, t *testing.T) {
 
 // does this binary tree satisfy symmetric order?
 // Note: this test also ensures that data structure is a binary tree since order is strict
-func isBST(b *BST) bool {
+func isBST[T comparable](b *BST[T]) bool {
 	return isBSTNode(b, b.root, "", "")
 }
 
 // is the tree rooted at x a BST with all keys strictly between min and max
 // (if min or max is nil, treat as empty constraint)
-func isBSTNode(b *BST, x *node, min, max string) bool {
+func isBSTNode[T comparable](b *BST[T], x *node[T], min, max string) bool {
 	if x == nil {
 		return true
 	}
@@ -134,11 +135,11 @@ func isBSTNode(b *BST, x *node, min, max string) bool {
 }
 
 // are the size fields correct?
-func isSizeConsistent(b *BST) bool {
+func isSizeConsistent[T comparable](b *BST[T]) bool {
 	return isSizeConsistentNode(b, b.root)
 }
 
-func isSizeConsistentNode(b *BST, x *node) bool {
+func isSizeConsistentNode[T comparable](b *BST[T], x *node[T]) bool {
 	if x == nil {
 		return true
 	}
@@ -149,14 +150,24 @@ func isSizeConsistentNode(b *BST, x *node) bool {
 }
 
 // check that ranks are consistent
-func isRankConsistent(b *BST) bool {
+func isRankConsistent[T comparable](b *BST[T]) bool {
 	for i := 0; i < b.Len(); i++ {
-		if i != b.Rank(b.selectKey(i)) {
+		key, err := b.Select(i)
+		if err != nil {
+			fmt.Printf("select error: %v", err)
+			return false
+		}
+		if i != b.Rank(key) {
 			return false
 		}
 	}
-	for _, key := range b.Keys() {
-		if strings.Compare(key, b.selectKey(b.Rank(key))) != 0 {
+	for _, k := range b.Keys() {
+		key, err := b.Select(b.Rank(k))
+		if err != nil {
+			fmt.Printf("select error: %v", err)
+			return false
+		}
+		if strings.Compare(k, key) != 0 {
 			return false
 		}
 	}

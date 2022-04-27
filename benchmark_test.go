@@ -5,7 +5,7 @@ import "testing"
 var result interface{}
 
 func BenchmarkPut(b *testing.B) {
-	bst := New()
+	bst := New[int]()
 	for n := 0; n < b.N; n++ {
 		for v, k := range data {
 			bst.Put(k, v)
@@ -14,7 +14,7 @@ func BenchmarkPut(b *testing.B) {
 }
 
 func BenchmarkGet(b *testing.B) {
-	bst := New()
+	bst := New[int]()
 	for v, k := range data {
 		bst.Put(k, v)
 	}
@@ -27,7 +27,7 @@ func BenchmarkGet(b *testing.B) {
 }
 
 func BenchmarkDeleteMin(b *testing.B) {
-	bst := New()
+	bst := New[int]()
 	for v, k := range data {
 		bst.Put(k, v)
 	}
@@ -38,7 +38,7 @@ func BenchmarkDeleteMin(b *testing.B) {
 }
 
 func BenchmarkDeleteMax(b *testing.B) {
-	bst := New()
+	bst := New[int]()
 	for v, k := range data {
 		bst.Put(k, v)
 	}
@@ -49,7 +49,7 @@ func BenchmarkDeleteMax(b *testing.B) {
 }
 
 func BenchmarkDelete(b *testing.B) {
-	bst := New()
+	bst := New[int]()
 	for v, k := range data {
 		bst.Put(k, v)
 	}
@@ -67,7 +67,7 @@ func BenchmarkDelete(b *testing.B) {
 //BenchmarkCeiling
 
 func BenchmarkKeys(b *testing.B) {
-	bst := New()
+	bst := New[int]()
 	for v, k := range data {
 		bst.Put(k, v)
 	}
@@ -81,7 +81,7 @@ func BenchmarkKeys(b *testing.B) {
 //BenchmarkMax
 
 func BenchmarkLen(b *testing.B) {
-	bst := New()
+	bst := New[int]()
 	for v, k := range data {
 		bst.Put(k, v)
 	}
@@ -92,7 +92,7 @@ func BenchmarkLen(b *testing.B) {
 }
 
 func BenchmarkString(b *testing.B) {
-	bst := New()
+	bst := New[int]()
 	for v, k := range data {
 		bst.Put(k, v)
 	}
