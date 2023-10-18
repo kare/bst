@@ -1,4 +1,4 @@
-golang.org/x/exp v0.0.0-20220428152302-39d4317da171 h1:TfdoLivD44QwvssI9Sv1xwa5DcL5XQr4au4sZ2F2NV4=
-golang.org/x/exp v0.0.0-20220428152302-39d4317da171/go.mod h1:lgLbSvA5ygNOMpwM/9anMpWVlVJ7Z+cHWq/eFuinpGE=
+golang.org/x/exp v0.0.0-20231006140011-7918f672742d h1:jtJma62tbqLibJ5sFQz8bKtEM8rJBtfilJ2qTU199MI=
+golang.org/x/exp v0.0.0-20231006140011-7918f672742d/go.mod h1:ldy0pHrwJyGW56pPQzzkH36rKxoZW1tw7ZJpeKx+hdo=
 kkn.fi/queue v0.0.4 h1:L5gudyJpJVOqjgET3zFXOpvv20SNzs+ulHI3TXtcAZg=
 kkn.fi/queue v0.0.4/go.mod h1:nPakUGaj2lkvqJ4reJL6Ew7T6L+U81nPecqqDyuZX4s=
