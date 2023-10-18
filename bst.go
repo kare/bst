@@ -291,12 +291,12 @@ func (b BST[_]) Keys() []string {
 }
 
 func (b BST[_]) keys(lo, hi string) []string {
-	q := queue.New[string]()
+	q := queue.NewSimple[string]()
 	b.collect(b.root, q, lo, hi)
 	return q.Slice()
 }
 
-func (b BST[T]) collect(x *node[T], q *queue.Q[string], lo, hi string) {
+func (b BST[T]) collect(x *node[T], q *queue.Simple[string], lo, hi string) {
 	if x == nil {
 		return
 	}
