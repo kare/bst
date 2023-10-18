@@ -1,6 +1,6 @@
 module kkn.fi/bst
 
-go 1.18
+go 1.19
 
 require kkn.fi/queue v0.0.4
 
