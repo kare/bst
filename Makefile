@@ -1,8 +1,4 @@
 
-.PHONY: lint
-lint:
-	gometalinter ./...
-
 .PHONY: clean
 clean:
 	@rm -f prof bst.test bench.txt
